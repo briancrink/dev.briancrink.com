@@ -3,10 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="icon" href="../shared/images/icons/favicon.png" type="image/png" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="../shared/images/icons/favicon-white.png" type="image/png" media="(prefers-color-scheme: dark)">
-  <link rel="apple-touch-icon" href="../shared/images/icons/apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="../shared/images/icons/apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
   <title>Tasks | Brian Crink</title>
 </head>
 <body>
@@ -31,7 +27,7 @@
 
     .container {
       text-align: center;
-      margin-top: 100px
+      margin-top: 100px;
     }
 
     .dev-image {
@@ -62,20 +58,152 @@
     }
 
     .status {
-      color: #666666;
-      font-size: 1rem;
-      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 40px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.023);
+      border-radius: 9999px;
+      padding: 8px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: fit-content;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #1784d1;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.35; 
+        transform: scale(0.85);
+      }
+    }
+
+    .status-text-wrapper {
+      display: flex;
+      align-items: center;
+      overflow: visible;           /* Changed from hidden to visible */
+      width: 0;
+    }
+
+    .status-text {
+      color: #1784d1;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Courier New", monospace;
+      white-space: nowrap;
+      display: inline-block;
+      flex-shrink: 0;
+      min-height: 1em;
+      line-height: 1;
+    }
+
+    .cursor {
+      width: 2px;
+      height: 1em;
+      background-color: #1784d1;
+      flex-shrink: 0;
+      animation: blink-caret 0.75s step-end infinite;
+      animation-delay: 0.1s;
+      animation-fill-mode: forwards;
+      margin-left: 4px;            /* Slightly increased for better spacing */
+    }
+
+    @keyframes blink-caret {
+      from, to { opacity: 0; }
+      50% { opacity: 1; }
     }
   </style>
 
   <div class="container">
     <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
-    <p class="status">In Development</p>
+    
+    <div class="status">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        
+        <div class="status-text-wrapper">
+          <span class="status-text"></span>
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+
     <img src="../shared/images/illustration/developer.jpg" alt="Software Developer" class="dev-image" draggable="false">
   </div>
+
+  <script>
+    function typeWriter(element, text, speed = 85) {
+      return new Promise((resolve) => {
+        element.textContent = '';
+        let i = 0;
+
+        const interval = setInterval(() => {
+          if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(interval);
+            resolve();
+          }
+        }, speed);
+      });
+    }
+
+    async function startTypewriter() {
+      const wrapper = document.querySelector('.status-text-wrapper');
+      const statusText = document.querySelector('.status-text');
+      if (!wrapper || !statusText) return;
+
+      const fullText = "Planned Development";
+
+      // Measure the text width
+      const measurer = document.createElement('span');
+      measurer.style.position = 'absolute';
+      measurer.style.visibility = 'hidden';
+      measurer.style.whiteSpace = 'nowrap';
+      measurer.style.font = getComputedStyle(statusText).font;
+      measurer.textContent = fullText;
+      document.body.appendChild(measurer);
+
+      const textWidth = measurer.offsetWidth;
+      document.body.removeChild(measurer);
+
+      // Add extra width for the cursor + margin (key fix)
+      const extraSpaceForCursor = 14; // pixels
+      wrapper.style.width = `${textWidth + extraSpaceForCursor}px`;
+
+      // Type the text
+      await typeWriter(statusText, fullText, 85);
+    }
+
+    function restartTypewriter() {
+      const statusText = document.querySelector('.status-text');
+      if (!statusText) return;
+
+      startTypewriter().then(() => {
+        setTimeout(restartTypewriter, 5000);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(restartTypewriter, 300);
+    });
+  </script>
 
 </body>
 </html>
