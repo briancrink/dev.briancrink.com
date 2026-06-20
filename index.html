@@ -68,7 +68,7 @@
       opacity: 0.85;
     }
 
-    /* Version badge positioned to the right of the title */
+    /* Current version badge (clickable) */
     .version-badge {
       position: absolute;
       top: 8px;
@@ -85,6 +85,13 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       border: 1px solid rgba(255, 255, 255, 0.08);
       white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .version-badge:hover {
+      background-color: #4b5563;
+      transform: translateY(-1px);
     }
 
     .status {
@@ -175,7 +182,7 @@
       margin-top: 8px;
     }
 
-    /* ========== Planned Version Pill ========== */
+    /* Future Version Pill (clickable) */
     .version-pill {
       display: inline-flex;
       align-items: center;
@@ -237,7 +244,9 @@
     <!-- Title with version badge positioned outside centering -->
     <div class="title-wrapper">
       <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
-      <span class="version-badge">v1.0.0</span>
+      
+      <!-- Current version tag (clickable) -->
+      <span class="version-badge" onclick="window.location.href='releases/#v1.0.0'">v1.0.0</span>
     </div>
     
     <div class="status">
@@ -253,8 +262,8 @@
 
       <!-- Planned Version + System Tags -->
       <div class="version-row">
-        <!-- Planned Version Pill -->
-        <div class="version-pill" onclick="window.location.href='/releases#v2.0.0'">
+        <!-- Future Version Pill (clickable) -->
+        <div class="version-pill" onclick="window.location.href='roadmap/#v2.0.0'">
           <span class="version-text">v2.0.0</span>
         </div>
 
