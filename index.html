@@ -31,22 +31,29 @@
 
     .container {
       text-align: center;
-      margin-top: 100px
+      margin-top: 80px;
     }
 
     .dev-image {
       width: 100%;
       max-width: 420px;
       height: auto;
-      margin-bottom: 40px;
+      margin: 14px 0 40px 0;
       opacity: 0.95;
+    }
+
+    /* ========== Title + Version Badge ========== */
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 24px;
     }
 
     .name {
       font-size: 3.0rem;
       font-weight: 600;
       color: #ffffff;
-      margin: 0 0 15px 0;
+      margin: 0;
       letter-spacing: -0.5px;
     }
 
@@ -61,11 +68,31 @@
       opacity: 0.85;
     }
 
+    /* Version badge positioned to the right of the title */
+    .version-badge {
+      position: absolute;
+      top: 8px;
+      left: 100%;
+      margin-left: 6px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      background-color: #374151;
+      color: #d1d5db;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
     .status {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
 
     .status-pill {
@@ -98,52 +125,123 @@
       }
     }
 
-  .status-text-wrapper {
-    position: relative;
-    width: 15ch;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-  }
+    .status-text-wrapper {
+      position: relative;
+      width: 15ch;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+    }
 
-  .status-text {
-    color: #22c55e;
-    font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Courier New", monospace;
-    white-space: nowrap;
-    display: inline-block;
-    max-width: 0;
-    overflow: hidden;
-    flex-shrink: 0;
-    animation: typing 1.9s steps(14, end) forwards;
-    animation-delay: 0.1s;
-  }
+    .status-text {
+      color: #22c55e;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Courier New", monospace;
+      white-space: nowrap;
+      display: inline-block;
+      max-width: 0;
+      overflow: hidden;
+      flex-shrink: 0;
+      animation: typing 1.9s steps(14, end) forwards;
+      animation-delay: 0.1s;
+    }
 
-  .cursor {
-    width: 2px;
-    height: 1em;
-    background-color: #22c55e;
-    flex-shrink: 0;
-    animation: blink-caret 0.75s step-end infinite;
-    animation-delay: 0.1s;
-    animation-fill-mode: forwards;
-    margin-left: 3px;
-  }
+    .cursor {
+      width: 2px;
+      height: 1em;
+      background-color: #22c55e;
+      flex-shrink: 0;
+      animation: blink-caret 0.75s step-end infinite;
+      animation-delay: 0.1s;
+      animation-fill-mode: forwards;
+      margin-left: 3px;
+    }
 
-  @keyframes typing {
-    from { max-width: 0; }
-    to { max-width: 14ch; }
-  }
+    @keyframes typing {
+      from { max-width: 0; }
+      to { max-width: 14ch; }
+    }
 
-  @keyframes blink-caret {
-    from, to { opacity: 0; }
-    50% { opacity: 1; }
-  }
+    @keyframes blink-caret {
+      from, to { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* ========== Version Row (Planned + System) ========== */
+    .version-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* ========== Planned Version Pill ========== */
+    .version-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
+      background-color: #1e40af;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-radius: 9999px;
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.35);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .version-pill:hover {
+      background-color: #1e3a8a;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.45);
+    }
+
+    .version-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    /* ========== System Tag ========== */
+    .system-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      background-color: #1f2937;
+      color: #9ca3af;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .system-tag:hover {
+      background-color: #374151;
+      color: #d1d5db;
+    }
+
+    .system-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
   </style>
 
   <div class="container">
-    <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
+    <!-- Title with version badge positioned outside centering -->
+    <div class="title-wrapper">
+      <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
+      <span class="version-badge">v1.0.0</span>
+    </div>
     
     <div class="status">
+      <!-- Status Pill -->
       <div class="status-pill">
         <span class="status-dot"></span>
         
@@ -152,9 +250,28 @@
           <span class="cursor"></span>
         </div>
       </div>
+
+      <!-- Planned Version + System Tags -->
+      <div class="version-row">
+        <!-- Planned Version Pill -->
+        <div class="version-pill" onclick="window.location.href='/releases#v2.0.0'">
+          <span class="version-text">v2.0.0</span>
+        </div>
+
+        <!-- System Tag -->
+        <div class="system-tag" onclick="window.location.href='/system'">
+          <span class="system-text">System</span>
+        </div>
+      </div>
     </div>
 
-    <img src="shared/images/illustration/developer.jpg" alt="Software Developer" class="dev-image" draggable="false">
+    <!-- Image with local path + remote fallback -->
+    <img 
+      src="shared/images/illustration/developer.jpg" 
+      onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/briancrink/briancrink.com-shared/refs/heads/main/images/illustration/developer.jpg';" 
+      alt="Software Developer" 
+      class="dev-image" 
+      draggable="false">
   </div>
 
   <script>
@@ -175,6 +292,5 @@
       setTimeout(restartTypewriter, 300);
     });
   </script>
-
 </body>
 </html>
