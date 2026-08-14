@@ -51,11 +51,11 @@
     max-width: 900px;
   }
 
-    .title-wrapper {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 24px;
-    }
+  .title-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+  }
 
   .name {
     font-size: 3rem;
@@ -76,30 +76,30 @@
     opacity: 0.85;
   }
 
-    .version-badge {
-      position: absolute;
-      top: 8px;
-      left: 100%;
-      margin-left: 6px;
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 9px;
-      background-color: #374151;
-      color: #d1d5db;
-      font-size: 0.7rem;
-      font-weight: 600;
-      border-radius: 9999px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-    }
+  .version-badge {
+    position: absolute;
+    top: 8px;
+    left: 100%;
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    background-color: #374151;
+    color: #d1d5db;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
 
-    .version-badge:hover {
-      background-color: #4b5563;
-      transform: translateY(-1px);
-    }
+  .version-badge:hover {
+    background-color: #4b5563;
+    transform: translateY(-1px);
+  }
 
   .dev-image {
     width: 100%;
@@ -138,12 +138,54 @@
     color: #00ff9d;
   }
 
+  /* ===== Calendar with labels ===== */
+  .calendar-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .day-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 22px;
+    font-size: 10px;
+    color: #8b949e;
+    text-align: right;
+    min-width: 28px;
+  }
+
+  .day-labels span {
+    height: 11px;
+    line-height: 11px;
+  }
+
+  .graph-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .month-labels {
+    display: flex;
+    gap: 3px;
+    height: 18px;
+    font-size: 10px;
+    color: #8b949e;
+    margin-bottom: 4px;
+  }
+
+  .month-labels span {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
   #calendar {
     display: flex;
     gap: 3px;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    max-width: 100%;
   }
 
   .week {
@@ -181,7 +223,6 @@
   a {
     color: #00ff9d;
     text-decoration: none;
-    margin-top: 40px;
   }
 
   .loading {
@@ -211,7 +252,23 @@
     </h2>
 
     <div class="stats" id="stats"></div>
-    <div id="calendar" class="loading"></div>
+
+    <div class="calendar-wrapper">
+      <div class="day-labels">
+        <span>Sun</span>
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+      </div>
+
+      <div class="graph-area">
+        <div class="month-labels" id="month-labels"></div>
+        <div id="calendar" class="loading"></div>
+      </div>
+    </div>
 
     <div class="legend">
       Less
@@ -237,14 +294,35 @@
           `<strong>${total}</strong> contributions in the last year`;
 
         const calendar = document.getElementById('calendar');
+        const monthLabels = document.getElementById('month-labels');
         calendar.innerHTML = '';
+        monthLabels.innerHTML = '';
         calendar.classList.remove('loading');
+
+        const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let lastMonth = -1;
 
         for (let i = 0; i < contributions.length; i += 7) {
           const week = document.createElement('div');
           week.className = 'week';
 
           const days = contributions.slice(i, i + 7);
+
+          // Month label (only show when month changes)
+          const firstDayOfWeek = days[0];
+          const date = new Date(firstDayOfWeek.date + 'T00:00:00');
+          const month = date.getMonth();
+
+          const monthLabel = document.createElement('span');
+          if (month !== lastMonth) {
+            monthLabel.textContent = monthNames[month];
+            lastMonth = month;
+          } else {
+            monthLabel.textContent = '';
+          }
+          monthLabel.style.width = '11px';
+          monthLabels.appendChild(monthLabel);
+
           days.forEach(day => {
             const cell = document.createElement('div');
             cell.className = `day level-${day.level}`;
