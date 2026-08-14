@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" href="../shared/images/icons/favicon.png" type="image/png" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="../shared/images/icons/favicon-white.png" type="image/png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="../shared/images/icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="../shared/images/icons/apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
+  <title>Contributions | Brian Crink</title>
+</head>
+<body>
+<style>
+  body {
+    background: #000000;
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px 80px;
+    box-sizing: border-box;
+    opacity: 0;
+    animation: fadeIn 1.3s forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 80px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+  }
+
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+  .name {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .name-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .name-link:hover {
+    opacity: 0.85;
+  }
+
+    .version-badge {
+      position: absolute;
+      top: 8px;
+      left: 100%;
+      margin-left: 6px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      background-color: #374151;
+      color: #d1d5db;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .version-badge:hover {
+      background-color: #4b5563;
+      transform: translateY(-1px);
+    }
+
+  .dev-image {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin: 10px 0 36px 0;
+    opacity: 0.95;
+  }
+
+  h2 {
+    color: #00ff9d;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .h2-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .h2-link:hover {
+    opacity: 0.85;
+  }
+
+  .stats {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+  }
+
+  .stats strong {
+    color: #00ff9d;
+  }
+
+  #calendar {
+    display: flex;
+    gap: 3px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    max-width: 100%;
+  }
+
+  .week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .day {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: #0f131e;
+  }
+
+  .day.level-1 { background: #0e4429; }
+  .day.level-2 { background: #006d32; }
+  .day.level-3 { background: #26a641; }
+  .day.level-4 { background: #39d353; }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #8b949e;
+  }
+
+  .legend .day {
+    width: 10px;
+    height: 10px;
+  }
+
+  a {
+    color: #00ff9d;
+    text-decoration: none;
+    margin-top: 40px;
+  }
+
+  .loading {
+    color: #8b949e;
+  }
+</style>
+
+  <div class="header">
+    <div class="title-wrapper">
+      <h1 class="name">
+        <a href="https://briancrink.com" class="name-link">Brian Crink</a>
+      </h1>
+      <span class="version-badge" onclick="window.location.href='releases/#v1.0.0'">v1.0.0</span>
+    </div>
+
+    <img 
+      src="shared/images/illustration/developer.jpg" 
+      onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/briancrink/briancrink.com-shared/refs/heads/main/images/illustration/developer.jpg';" 
+      alt="Software Developer" 
+      class="dev-image" 
+      draggable="false">
+  </div>
+
+  <div class="body">
+    <h2>
+      <a href="https://github.com/briancrink" class="h2-link">GitHub Contributions</a>
+    </h2>
+
+    <div class="stats" id="stats"></div>
+    <div id="calendar" class="loading"></div>
+
+    <div class="legend">
+      Less
+      <div class="day level-0"></div>
+      <div class="day level-1"></div>
+      <div class="day level-2"></div>
+      <div class="day level-3"></div>
+      <div class="day level-4"></div>
+      More
+    </div>
+  </div>
+
+  <script>
+    async function loadContributions() {
+      try {
+        const res = await fetch('https://github-contributions-api.jogruber.de/v4/briancrink?y=last');
+        const data = await res.json();
+
+        const contributions = data.contributions;
+        const total = data.total?.lastYear ?? contributions.reduce((sum, d) => sum + d.count, 0);
+
+        document.getElementById('stats').innerHTML = 
+          `<strong>${total}</strong> contributions in the last year`;
+
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = '';
+        calendar.classList.remove('loading');
+
+        for (let i = 0; i < contributions.length; i += 7) {
+          const week = document.createElement('div');
+          week.className = 'week';
+
+          const days = contributions.slice(i, i + 7);
+          days.forEach(day => {
+            const cell = document.createElement('div');
+            cell.className = `day level-${day.level}`;
+            cell.title = `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`;
+            week.appendChild(cell);
+          });
+
+          calendar.appendChild(week);
+        }
+      } catch (err) {
+        document.getElementById('calendar').textContent = 'Failed to load contributions.';
+        console.error(err);
+      }
+    }
+
+    loadContributions();
+  </script>
+</body>
+</html>
