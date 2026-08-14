@@ -109,36 +109,27 @@
     opacity: 0.95;
   }
 
-  h2 {
-    color: #00ff9d;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 20px 0;
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-  }
-
-  .h2-link {
-    color: inherit;
+  .stats-link {
     text-decoration: none;
-    cursor: pointer;
+    color: inherit;
+    display: inline-block;
+    margin-bottom: 24px;
     transition: opacity 0.2s ease;
   }
 
-  .h2-link:hover {
+  .stats-link:hover {
     opacity: 0.85;
   }
 
   .stats {
-    font-size: 1.1rem;
-    margin-bottom: 24px;
+    font-size: 1.5rem;
+    margin-bottom: 0;
   }
 
   .stats strong {
     color: #00ff9d;
   }
 
-  /* ===== Calendar with labels ===== */
   .calendar-wrapper {
     display: flex;
     gap: 8px;
@@ -180,6 +171,7 @@
 
   .month-labels span {
     display: inline-block;
+    width: 11px;
     white-space: nowrap;
   }
 
@@ -199,12 +191,46 @@
     height: 11px;
     border-radius: 2px;
     background: #0f131e;
+    cursor: pointer;
+  }
+
+  .day.empty {
+    background: transparent;
+    cursor: default;
   }
 
   .day.level-1 { background: #0e4429; }
   .day.level-2 { background: #006d32; }
   .day.level-3 { background: #26a641; }
   .day.level-4 { background: #39d353; }
+
+  #tooltip {
+    position: fixed;
+    background: rgba(22, 27, 34, 0.94);
+    color: #e6edf3;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: pre-line;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+    z-index: 9999;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    min-width: 150px;
+    transform: translate(-50%, -100%) scale(0.96);
+  }
+
+  #tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -100%) scale(1);
+  }
 
   .legend {
     display: flex;
@@ -247,11 +273,9 @@
   </div>
 
   <div class="body">
-    <h2>
-      <a href="https://github.com/briancrink" class="h2-link">GitHub Contributions</a>
-    </h2>
-
-    <div class="stats" id="stats"></div>
+    <a href="https://github.com/briancrink" class="stats-link" target="_blank" rel="noopener">
+      <div class="stats" id="stats"></div>
+    </a>
 
     <div class="calendar-wrapper">
       <div class="day-labels">
@@ -281,57 +305,163 @@
     </div>
   </div>
 
+  <div id="tooltip"></div>
+
   <script>
+    function formatTooltipDate(dateStr, count, level) {
+      const date = new Date(dateStr + 'T00:00:00');
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+
+      const dayName = days[date.getDay()];
+      const monthName = months[date.getMonth()];
+      const day = date.getDate();
+      const year = date.getFullYear();
+
+      const levelColors = {
+        0: '#8b949e',
+        1: '#0e4429',
+        2: '#006d32',
+        3: '#26a641',
+        4: '#39d353'
+      };
+
+      const color = levelColors[level] || '#8b949e';
+      const contribText = count === 1 ? 'Contribution' : 'Contributions';
+
+      const numberHtml = count > 0
+        ? `<span style="color:${color}; font-weight:600;">${count}</span>`
+        : `${count}`;
+
+      return `${dayName} ${monthName} ${day}, ${year}<br>${numberHtml} ${contribText}`;
+    }
+
+    function setupTooltip() {
+      const tooltip = document.getElementById('tooltip');
+
+      document.querySelectorAll('.day[data-tooltip]').forEach(cell => {
+        cell.addEventListener('mouseenter', () => {
+          tooltip.innerHTML = cell.getAttribute('data-tooltip');
+          tooltip.classList.add('visible');
+
+          const rect = cell.getBoundingClientRect();
+          const tipWidth = tooltip.offsetWidth;
+          const tipHeight = tooltip.offsetHeight;
+
+          let left = rect.left + rect.width / 2;
+          let top = rect.top - 10;
+
+          const minLeft = tipWidth / 2 + 8;
+          const maxLeft = window.innerWidth - tipWidth / 2 - 8;
+          left = Math.max(minLeft, Math.min(maxLeft, left));
+
+          if (top - tipHeight < 8) {
+            top = rect.bottom + 10;
+            tooltip.style.transform = 'translate(-50%, 0) scale(1)';
+          } else {
+            tooltip.style.transform = 'translate(-50%, -100%) scale(1)';
+          }
+
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
+        });
+
+        cell.addEventListener('mouseleave', () => {
+          tooltip.classList.remove('visible');
+        });
+      });
+    }
+
     async function loadContributions() {
       try {
-        const res = await fetch('https://github-contributions-api.jogruber.de/v4/briancrink?y=last');
+        const res = await fetch('https://github-contributions-api.jogruber.de/v4/briancrink?y=2026');
         const data = await res.json();
 
-        const contributions = data.contributions;
-        const total = data.total?.lastYear ?? contributions.reduce((sum, d) => sum + d.count, 0);
+        let contributions = data.contributions;
+        const total = data.total?.["2026"] ?? contributions.reduce((sum, d) => sum + d.count, 0);
 
         document.getElementById('stats').innerHTML = 
-          `<strong>${total}</strong> contributions in the last year`;
+          `<strong>${total}</strong> Public GitHub Contributions`;
+
+        // Pad start so weeks begin on Sunday
+        if (contributions.length > 0) {
+          const firstDate = new Date(contributions[0].date + 'T00:00:00');
+          const firstDayOfWeek = firstDate.getDay(); // 0 = Sun
+
+          for (let i = 0; i < firstDayOfWeek; i++) {
+            contributions.unshift({
+              date: null,
+              count: 0,
+              level: 0,
+              empty: true
+            });
+          }
+        }
 
         const calendar = document.getElementById('calendar');
         const monthLabels = document.getElementById('month-labels');
+
         calendar.innerHTML = '';
         monthLabels.innerHTML = '';
         calendar.classList.remove('loading');
 
         const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         let lastMonth = -1;
+        let lastYear = -1;
 
         for (let i = 0; i < contributions.length; i += 7) {
           const week = document.createElement('div');
           week.className = 'week';
 
           const days = contributions.slice(i, i + 7);
-
-          // Month label (only show when month changes)
-          const firstDayOfWeek = days[0];
-          const date = new Date(firstDayOfWeek.date + 'T00:00:00');
-          const month = date.getMonth();
+          const firstRealDay = days.find(d => d.date);
 
           const monthLabel = document.createElement('span');
-          if (month !== lastMonth) {
-            monthLabel.textContent = monthNames[month];
-            lastMonth = month;
+
+          if (firstRealDay) {
+            const date = new Date(firstRealDay.date + 'T00:00:00');
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const shortYear = String(year).slice(-2);
+
+            if (month !== lastMonth || year !== lastYear) {
+              monthLabel.textContent = `${monthNames[month]} '${shortYear}`;
+              lastMonth = month;
+              lastYear = year;
+            } else {
+              monthLabel.textContent = '';
+            }
           } else {
             monthLabel.textContent = '';
           }
-          monthLabel.style.width = '11px';
+
           monthLabels.appendChild(monthLabel);
 
           days.forEach(day => {
             const cell = document.createElement('div');
-            cell.className = `day level-${day.level}`;
-            cell.title = `${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`;
+
+            if (day.empty || !day.date) {
+              cell.className = 'day empty';
+            } else {
+              cell.className = `day level-${day.level}`;
+              cell.setAttribute('data-tooltip', formatTooltipDate(day.date, day.count, day.level));
+            }
+
             week.appendChild(cell);
           });
 
+          while (week.children.length < 7) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'day empty';
+            week.appendChild(emptyCell);
+          }
+
           calendar.appendChild(week);
         }
+
+        setupTooltip();
+
       } catch (err) {
         document.getElementById('calendar').textContent = 'Failed to load contributions.';
         console.error(err);
