@@ -122,7 +122,7 @@
   }
 
   .stats {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     margin-bottom: 0;
   }
 
@@ -446,6 +446,13 @@
             } else {
               cell.className = `day level-${day.level}`;
               cell.setAttribute('data-tooltip', formatTooltipDate(day.date, day.count, day.level));
+              cell.setAttribute('data-date', day.date);
+
+              // Open GitHub profile filtered to this exact day
+              cell.addEventListener('click', () => {
+                const url = `https://github.com/briancrink?tab=overview&from=${day.date}&to=${day.date}`;
+                window.open(url, '_blank', 'noopener,noreferrer');
+              });
             }
 
             week.appendChild(cell);
