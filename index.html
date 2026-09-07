@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="icon" href="../resources/images/icons/favicon.png" type="image/png" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="../resources/images/icons/favicon-white.png" type="image/png" media="(prefers-color-scheme: dark)">
-  <link rel="apple-touch-icon" href="../resources/images/icons/apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="../resources/images/icons/apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="resources/images/icons/favicon.png" type="image/png" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="resources/images/icons/favicon-white.png" type="image/png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="resources/images/icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="resources/images/icons/apple-touch-icon-dark.png" media="(prefers-color-scheme: dark)">
   <title>Dev | Brian Crink</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -205,6 +205,7 @@
 
     .status {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 40px;
@@ -279,6 +280,130 @@
       50% { opacity: 1; }
     }
 
+
+    /* ========== Title + Version Badge ========== */
+    .title-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .title-wrapper .name {
+      margin-bottom: 0;
+    }
+
+    .version-badge {
+      position: absolute;
+      top: 8px;
+      left: 100%;
+      margin-left: 6px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      background-color: #374151;
+      color: #d1d5db;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .version-badge:hover {
+      background-color: #4b5563;
+      transform: translateY(-1px);
+    }
+
+    body.light .version-badge {
+      background-color: #e5e7eb;
+      color: #374151;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    body.light .version-badge:hover {
+      background-color: #d1d5db;
+    }
+
+    .version-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .version-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
+      background-color: #1e40af;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-radius: 9999px;
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.35);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    .version-pill:hover {
+      background-color: #1e3a8a;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.45);
+    }
+
+    .version-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .system-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      background-color: #1f2937;
+      color: #9ca3af;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    .system-tag:hover {
+      background-color: #374151;
+      color: #d1d5db;
+    }
+
+    body.light .system-tag {
+      background-color: #e5e7eb;
+      color: #4b5563;
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    body.light .system-tag:hover {
+      background-color: #d1d5db;
+      color: #1f2937;
+    }
+
+    .system-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
     .toggle-btn {
       position: absolute;
       top: 0;
@@ -342,7 +467,10 @@
       </p>
     </div>
 
-    <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
+    <div class="title-wrapper">
+      <h1 class="name"><a href="https://briancrink.com" class="name-link">Brian Crink</a></h1>
+      <span class="version-badge" onclick="window.location.href='releases/#v1.0.0'">v1.0.0</span>
+    </div>
 
     <div class="status">
       <div class="status-pill">
@@ -351,6 +479,15 @@
         <div class="status-text-wrapper">
           <span class="status-text"></span>
           <span class="cursor"></span>
+        </div>
+      </div>
+
+      <div class="version-row">
+        <div class="version-pill" onclick="window.location.href='roadmap/#v2.0.0'">
+          <span class="version-text">v2.0.0</span>
+        </div>
+        <div class="system-tag" onclick="window.location.href='/system'">
+          <span class="system-text">System</span>
         </div>
       </div>
     </div>
